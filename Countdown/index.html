@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script type="text/javascript">
+    window.onload = () => {
+      window.setInterval(countdown, 1000);
+    }
+
+    countdown = () => {
+
+      const input = document.getElementsByTagName('input')[0];
+      const display = document.getElementsByTagName('h2')[0];
+
+      const targetTime = validInput(input.value);
+      const cdSeconds = secondDiff(targetTime);
+
+      display.innerHTML = secondsToString(cdSeconds);
+
+    }
+
+    // Returns a Date object that represents the input time
+    validInput = (data) => {
+
+      const now = new Date();
+      const value = now.getFullYear()+"-"+(now.getMonth()+1)+"-"+now.getDate()+"T"+data+":00Z";
+      const targetDate = new Date(value);
+
+      return targetDate;
+
+    }
+
+    secondDiff = (targetDate) => {
+
+      const now = Date.now()+(120*60*1000);
+      const msDiff = targetDate - now;
+
+      return Math.round(msDiff/1000);
+
+    }
+
+    secondsToString = (data) => {
+
+      // console.log(data/(60*60));
+      let hours = Math.floor(data/(60*60));
+      let minutes = Math.floor((data-(hours*60*60))/60);
+      let seconds = data-(hours*60*60)-(minutes*60);
+
+      return hours+"h "+minutes+"m "+seconds+"s";
+
+    }
+  </script>
+</head>
+<body>
+
+  <h2></h2>
+  <input type="text" value="12:00">
+
+</body>
+</html>
