@@ -104,7 +104,7 @@ class Countdown {
     let validEvents = this.validateEvents(events);
 
     // validateEvents will return an empty array if there are no valid events to display
-    if(validEvents.length === 0) return 0;
+    if(validEvents.length === 0) return [0, 0, 0, ""];
 
     // Temporary. Will require a loop if the script is to manage multiple events (TODO)
     let displayEvent = validEvents[0];
