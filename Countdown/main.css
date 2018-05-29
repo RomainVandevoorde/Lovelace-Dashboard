@@ -1,0 +1,76 @@
+body {
+  background-color: black;
+  color: white;
+  font-family: sans-serif;
+}
+
+#countdown {
+  background-color: lightgreen;
+  text-align: center;
+}
+
+#countdown h1 {
+  font-size: 6em;
+  margin: 0;
+  padding: 24px 0;
+}
+
+#countdown p {
+  font-size: 2em;
+  margin: 0;
+  padding: 12px 0;
+}
+
+#event-menu {
+  display: none;
+  height: 100vh;
+  min-width: 200px;
+  box-sizing: border-box;
+  background-color: white;
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 10px;
+}
+
+.event-form .row {
+  padding: 6px 0;
+}
+
+.event-form textarea {
+  width: 100%;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+#events-list .event-form .row i {
+  color: black;
+}
+
+#events-list .event-form .row .fa-clock.on {
+  color: royalblue;
+}
+
+#events-list .event-form .row .fa-clock.off {
+  color: red;
+}
+
+#add-event {
+  border: 1px solid royalblue;
+  margin: 8px 0;
+  padding: 12px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+#show-menu {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}
+
+/* #hide-menu {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+} */

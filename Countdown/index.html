@@ -5,31 +5,49 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Dashboard</title>
-  <script type="text/javascript" src="main.js"></script>
+  <script type="text/javascript" src="countdown1.js"></script>
   <link rel="stylesheet" href="main.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
 </head>
 <body>
 
-  <h2></h2>
-  <input type="text" value="16:30">
+  <section id="countdown">
+    <h1>01:25:39</h1>
+    <p>pour finir le challenge</p>
+  </section>
 
-  <div id="eventsMenu">
-    <div class="event">
-      <input type="checkbox">
-      <input type="text" class="hour">
-      <input type="text" class="minute">
-      <textarea cols="20" rows="3"></textarea>
+  <section id="event-menu">
+    <div id="events-list">
+      <div class="event-form">
+        <input type="checkbox">
+        <div class="row">
+          <input type="number" class="hour">
+          <input type="number" class="minute">
+          <i class="far fa-clock off"></i>
+          <i class="fas fa-times"></i>
+        </div>
+        <textarea></textarea>
+      </div>
     </div>
-    <div id="newEventForm">
-      <form action="">
-        <input type="checkbox" name="do-countdown">
-        <input type="text" name="hour">
-        <input type="text" name="minute">
-        <textarea cols="20" rows="3" name="description"></textarea>
-        <input type="submit">
-      </form>
+    <div id="add-event">
+      <div class="event-form">
+        <form action="">
+          <div class="row">
+            <input type="number" class="hour">
+            <input type="number" class="minute">
+            <i class="far fa-clock off"></i>
+            <i class="fas fa-times"></i>
+          </div>
+          <textarea></textarea>
+          <div class="row">
+            <button type="submit">Ajouter</button>
+          </div>
+        </form>
+      </div>
     </div>
-  </div>
+  </section>
+
+  <button id="show-menu">Menu</button>
 
 </body>
 </html>

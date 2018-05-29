@@ -74,16 +74,12 @@ class eventsMenu {
     return eventsArray;
   }
 
+  // Takes in an array of events and checks wether or not each one is valid
   validateEvents(array) {
-    // Initialize the return variable
+
     let eventsArray = [];
 
     // Go through the array and validate each event
-    // array.forEach(function(e){
-    //   let ev = this.validateEvent(e);
-    //   if(e.length === 3) eventsArray.push(ev);
-    // });
-
     for (let i = 0; i < array.length; i++) {
       let ev = this.validateEvent(array[i]);
       if(ev.length !== 0) eventsArray.push(ev);
@@ -93,22 +89,20 @@ class eventsMenu {
     return eventsArray;
   }
 
+  // Validates events. Returns an empty array if any data is invalid
   validateEvent(array) {
     // First element should be a bool
     if(typeof array[0] !== "boolean") return [];
-    // console.log('bool ok');
 
     // Second element should be a valid int and hour
     let hour = parseInt(array[1]);
     if(!Number.isInteger(hour)) return [];
     if(hour < 0 || hour > 24) return [];
-    // console.log('hour ok');
 
     // Third element should be a valid int and minute
     let minute = parseInt(array[2]);
     if(!Number.isInteger(minute)) return [];
     if(minute < 0 || minute > 59) return [];
-    // console.log('minute ok');
 
     // Fourth element should be text
     if(typeof array[3] !== "string") return [];
