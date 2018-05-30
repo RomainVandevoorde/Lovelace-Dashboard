@@ -2,9 +2,8 @@ window.onload = () => {
 
   console.log(navigator.getUserMedia);
 
-  let meterObject = new volumeMeter();
-
   document.getElementById('activate').addEventListener('click', function(e){
+    let meterObject = new volumeMeter();
     meterObject.createMeter();
     mainLoop(meterObject);
   });
@@ -14,7 +13,7 @@ window.onload = () => {
 
 
 
-let mainLoop = (object) => {
+let mainLoop = (volumeMeter) => {
 
   // console.log('mainLoop');
 
@@ -23,55 +22,39 @@ let mainLoop = (object) => {
   //   object.createMeter();
   // }
 
-  let level = Math.log10(object.meter.volume)*20 + 80;
+  let level = Math.log10(volumeMeter.meter.volume)*20 + 80;
 
-  document.getElementsByTagName('p')[0].innerHTML = level;
+  document.getElementsByTagName('p')[0].innerHTML = volumeMeter.meter.volume+" - "+level;
+  
 
-  window.setTimeout(function(){mainLoop(object);}, 100);
+  window.setTimeout(function(){mainLoop(volumeMeter);}, 50);
 }
 
 
 class volumeMeter {
 
   constructor() {
-    this.audioContext = null;
     this.mediaStreamSource = null;
-    this.streamOn = false;
-    this.meter = "nope";
+
+    // Initiate processor and audiocontext
+    this.audioContext = this.getAudioContext();
+    this.meter = this.createProcessor();
   }
 
   // Main function
   createMeter() {
-    // First, create an audio context
-    this.getAudioContext();
-    // Second, get a stream from the navigator
-    this.getNavStream();
 
-    // Thrid, check if we got a stream
-    // console.log("streamOn: "+ this.streamOn);
-
-    // If we do, bind audio context to stream source
-    // Then create a processor
-    // Then bind the processor to the audio context (connect)
-
-    // console.log(this.meter.volume);
+    this.getMediaStream().then(this.bindStreamProcessor.bind(this), this.returnError.bind(this));
 
   }
-
-  // get meter() {
-  //   return this.meter;
-  // }
-  //
-  // set meter(obj) {
-  //   this.meter = obj;
-  // }
 
   // Gets audio context
   getAudioContext() {
     // console.log(this.audioContext);
     window.AudioContext = window.AudioContext || window.webkitAudioContext;
-    this.audioContext = new AudioContext();
+    let audioContext = new AudioContext();
     console.log('audioContext created');
+    return audioContext;
   }
 
   getNavStream() {
@@ -98,6 +81,49 @@ class volumeMeter {
     } catch (e) {
         alert('getUserMedia threw exception :' + e);
     }
+  }
+
+  getMediaStream() {
+    return new Promise((resolve, reject) => {
+      // monkeypatch getUserMedia
+      navigator.getUserMedia =
+        navigator.getUserMedia ||
+        navigator.webkitGetUserMedia ||
+        navigator.mozGetUserMedia;
+
+      // ask for an audio input
+      navigator.getUserMedia({
+        "audio": {
+          "mandatory": {
+            "googEchoCancellation": "false",
+            "googAutoGainControl": "false",
+            "googNoiseSuppression": "false",
+            "googHighpassFilter": "false"
+          },
+          "optional": []
+        }
+      }, resolve, reject);
+    });
+  };
+
+  // Takes a MediaStream object and biends it to the audio context
+  setCtxStreamSource(stream) {
+    this.mediaStreamSource = this.audioContext.createMediaStreamSource(stream);
+  }
+
+  bindStreamProcessor(stream) {
+    console.log('bindStreamProcessor');
+    // Create an AudioNode from the stream.
+    this.mediaStreamSource = this.audioContext.createMediaStreamSource(stream);
+
+    // Connect the AudioNode to the Processor
+    this.mediaStreamSource.connect(this.meter);
+
+    console.log('success');
+  }
+
+  returnError(e) {
+    console.log(e);
   }
 
   didntGetStream() {
@@ -131,7 +157,7 @@ class volumeMeter {
 
     // this will have no effect, since we don't copy the input to the output,
     // but works around a current Chrome bug.
-    processor.connect(this.audioContext.destination);
+    // processor.connect(this.audioContext.destination);
 
     processor.checkClipping =
       function(){
