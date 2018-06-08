@@ -22,6 +22,7 @@ let countdownLoop = (ui, cd) => {
   // Get the info required for display
   let info = cd.getDisplayInfo(events);
 
+  // Put the info in the UI
   ui.fillCountdown(info);
 
 };
@@ -55,7 +56,7 @@ class UI {
 
   fillCountdown(info) {
     this.displayBlock.getElementsByTagName('h1')[0].innerHTML = info[0]+':'+info[1]+':'+info[2];
-    this.displayBlock.getElementsByTagName('p')[0].innerHTML = info[3];
+    this.displayBlock.getElementsByTagName('p')[1].innerHTML = info[3];
   }
 
 }

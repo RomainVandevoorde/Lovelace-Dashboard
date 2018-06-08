@@ -1,8 +1,7 @@
 window.onload = () => {
 
-  console.log(navigator.getUserMedia);
-
   document.getElementById('activate').addEventListener('click', function(e){
+    this.style.display = 'none';
     let meterObject = new volumeMeter();
     meterObject.createMeter();
     mainLoop(meterObject);
@@ -10,22 +9,11 @@ window.onload = () => {
 
 }
 
-
-
-
 let mainLoop = (volumeMeter) => {
 
-  // console.log('mainLoop');
+  let level = Math.round(volumeMeter.meter.volume*100);
 
-  // if(object.meter.volume === undefined) {
-  //   console.log('create meter');
-  //   object.createMeter();
-  // }
-
-  let level = Math.log10(volumeMeter.meter.volume)*20 + 80;
-
-  document.getElementsByTagName('p')[0].innerHTML = volumeMeter.meter.volume+" - "+level;
-  
+  document.getElementsByTagName('p')[0].innerHTML = volumeMeter.meter.volume+"<br>"+level;
 
   window.setTimeout(function(){mainLoop(volumeMeter);}, 50);
 }
@@ -35,6 +23,7 @@ class volumeMeter {
 
   constructor() {
     this.mediaStreamSource = null;
+    this.streamActive = false;
 
     // Initiate processor and audiocontext
     this.audioContext = this.getAudioContext();
@@ -44,7 +33,8 @@ class volumeMeter {
   // Main function
   createMeter() {
 
-    this.getMediaStream().then(this.bindStreamProcessor.bind(this), this.returnError.bind(this));
+    this.getMediaStream()
+    .then(this.bindStreamProcessor.bind(this), this.returnError.bind(this));
 
   }
 
@@ -55,32 +45,6 @@ class volumeMeter {
     let audioContext = new AudioContext();
     console.log('audioContext created');
     return audioContext;
-  }
-
-  getNavStream() {
-    try {
-        // monkeypatch getUserMedia
-        navigator.getUserMedia =
-          navigator.getUserMedia ||
-          navigator.webkitGetUserMedia ||
-          navigator.mozGetUserMedia;
-
-        // ask for an audio input
-        navigator.getUserMedia(
-        {
-            "audio": {
-                "mandatory": {
-                    "googEchoCancellation": "false",
-                    "googAutoGainControl": "false",
-                    "googNoiseSuppression": "false",
-                    "googHighpassFilter": "false"
-                },
-                "optional": []
-            }
-        }, this.gotStream.bind(this), this.didntGetStream.bind(this));
-    } catch (e) {
-        alert('getUserMedia threw exception :' + e);
-    }
   }
 
   getMediaStream() {
@@ -201,17 +165,5 @@ class volumeMeter {
       // want "fast attack, slow release."
       this.volume = Math.max(rms, this.volume*this.averaging);
   }
-
-}
-
-class audioProcessor {
-
-  constructor() {
-
-  }
-
-  createAudioMeter(audioContext,clipLevel,averaging,clipLag) {
-
-}
 
 }
