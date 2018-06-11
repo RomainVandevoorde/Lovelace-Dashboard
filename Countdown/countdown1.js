@@ -7,24 +7,31 @@ window.onload = () => {
   window.setInterval(countdownLoop, 100, ui, countdown);
 
   // Create menu hide/show button
-  let menu = document.getElementById('event-menu');
-
-  document.getElementById('show-menu').addEventListener('click', function(){
-    console.log('menu');
-    if(menu.style.display === 'block') menu.style.display = 'none';
-    else menu.style.display = 'block';
-  });
+  document.getElementById('show-menu').addEventListener('click', ()=>{ui.toggleMenu()});
 
 
   // Create event for activate audio meter button
   document.getElementById('activate').addEventListener('click', function(e){
     this.style.display = 'none';
     let meterObject = new volumeMeter();
+    let volumeProc = new volumeProcessor();
     meterObject.createMeter();
-    mainLoop(meterObject);
+    // mainLoop(meterObject);
+    console.log(volumeProc);
+
+    window.setInterval(dataLoop, 100, meterObject, volumeProc, ui);
   });
 
 };
+
+
+let dataLoop = (audioMeter, volumeProcessor, ui) => {
+
+  let data = audioMeter.meter.volume*100;
+  volumeProcessor.storeData(data);
+  ui.debug.innerHTML = volumeProcessor.av+"<br>"+volumeProcessor.data.length;
+
+}
 
 
 let countdownLoop = (ui, cd) => {
@@ -36,7 +43,6 @@ let countdownLoop = (ui, cd) => {
 
   // Put the info in the UI
   ui.fillCountdown(info);
-
 };
 
 
@@ -44,9 +50,20 @@ let countdownLoop = (ui, cd) => {
 class UI {
 
   constructor() {
+    // Block containing "new event" form
     this.addEventBlock = document.getElementById('add-event');
+    // Block containing event list
     this.eventListBlock = document.getElementById('events-list');
+    // Block containing countdown display
     this.displayBlock = document.getElementById('countdown');
+    // Button to toggle menu on/off
+    this.menuButton = document.getElementById('show-menu');
+    // Main menu block
+    this.menu = document.getElementById('event-menu');
+
+    // Debugging
+    // TODO Remove before push to prod
+    this.debug = document.getElementById('debug').getElementsByTagName('p')[0];
   }
 
   getEvents() {
@@ -66,9 +83,16 @@ class UI {
     return eventsArray;
   }
 
+  // Receives an array containing (hours, minutes, seconds, description)
+  // Displays it in UI
   fillCountdown(info) {
     this.displayBlock.getElementsByTagName('h1')[0].innerHTML = info[0]+':'+info[1]+':'+info[2];
     this.displayBlock.getElementsByTagName('p')[1].innerHTML = info[3];
+  }
+
+  toggleMenu() {
+    if(this.menu.style.display === 'block') this.menu.style.display = 'none';
+    else this.menu.style.display = 'block';
   }
 
 }
@@ -167,4 +191,71 @@ class Countdown {
     return [hours, minutes, seconds];
   }
 
+}
+
+function volumeProcessor() {
+  this.avgTime = 4000; // Time to average (ms)
+  this.avgSamples = 40; // Number of samples to take
+
+  this.data = [];
+  this.av = null;
+
+  this.storeData = (data) => {
+    // Stores data to respect max nb of data samples
+    if(this.data.length < this.avgSamples) {
+      this.data.push(data);
+    } else {
+      this.data.shift();
+      this.data.push(data);
+    }
+
+    // Re-calculates the average
+    this.av = this.calcAvgVolume();
+  }
+
+  this.calcAvgVolume = () => {
+    let total = 0;
+    let dataLength = this.data.length;
+
+    // Special cases
+    if(dataLength < 1) return 0;
+    if(dataLength === 1) return this.data[0];
+
+    // Loop through data
+    for(let i = 0; i < dataLength; i++) {
+      total += this.data[i];
+    }
+
+    return total/dataLength;
+  }
+
+  this.getGradient = () => {
+    let nb = this.av;
+  	let step1 = 25; // Step 1: yellow
+  	let step2 = 50; // Step 2: red
+  	let inter = step2-step1;
+
+  	if(nb < 0 ) {
+  		return 'rgb(0,200,0)';
+  	}
+  	else if(nb < step1) {
+  		// var redLvl = 6*nb;
+  		let redLvl = Math.ceil((255/step1)*nb);
+  		return 'rgb('+redLvl+',200,0)';
+  	}
+    else if (nb < step2) {
+  		// yellow to red
+  		// var greenLvl = 200 - 5*(nb-40);
+  		let greenLvl = Math.ceil(200 - ((200/inter)*(nb - inter)));
+  		return 'rgb(255,'+greenLvl+',0)';
+  	}
+    else if (!isFinite(nb)) {
+  		// Si on ne reçoit pas de donénes du micro, background noir
+  		return 'rgb(0,0,0)';
+  	}
+    else {
+  		// red
+  		return 'rgb(255,0,0)';
+  	}
+  }
 }

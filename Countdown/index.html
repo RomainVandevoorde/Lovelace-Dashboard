@@ -10,20 +10,22 @@
   <script type="text/javascript" src="countdown1.js"></script>
   <script src="audio-meter.js" charset="utf-8"></script>
   <script type="text/javascript">
-
-
   let mainLoop = (volumeMeter) => {
 
     let level = Math.round(volumeMeter.meter.volume*100);
 
     document.getElementById('counter').innerHTML = volumeMeter.meter.volume+"<br>"+level;
-    document.getElementsByTagName('circle')[0].setAttribute('r', level*3);
+    document.getElementsByTagName('circle')[0].setAttribute('r', (level*2)+100);
 
     window.setTimeout(function(){mainLoop(volumeMeter);}, 50);
   }
   </script>
 </head>
 <body>
+
+  <div id="debug">
+    <p></p>
+  </div>
 
   <section id="countdown">
     <p contenteditable="true" spellcheck="false">Prochaine deadline dans</p>
