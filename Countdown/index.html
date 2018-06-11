@@ -19,6 +19,33 @@
 
     window.setTimeout(function(){mainLoop(volumeMeter);}, 50);
   }
+  
+  // let url = window.location.href;
+  // console.log(url);
+  // let url_obj = new URL(url);
+  // console.log(url_obj);
+
+  let url = new URL(window.location.href);
+  let params = new URLSearchParams(url.search.slice(1));
+
+  let keys = [];
+  let values = [];
+
+  for(let pair of params.entries()) {
+    console.log(pair[0]+ ': '+ pair[1]);
+    // keys.push(pair[0]);
+    // values.push(pair[1]);
+    switch (pair[0]) {
+      case "bg":
+        console.log("Background defined: "+pair[1]);
+        break;
+      case "lng":
+        console.log("Language defined: "+pair[1]);
+        break;
+      default:
+        console.log("Huh ?");
+    }
+  }
   </script>
 </head>
 <body>
