@@ -5,14 +5,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Dashboard</title>
-  <script type="text/javascript" src="countdown1.js"></script>
   <link rel="stylesheet" href="main.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+  <script type="text/javascript" src="countdown1.js"></script>
+  <script src="audio-meter.js" charset="utf-8"></script>
+  <script type="text/javascript">
+
+
+  let mainLoop = (volumeMeter) => {
+
+    let level = Math.round(volumeMeter.meter.volume*100);
+
+    document.getElementById('counter').innerHTML = volumeMeter.meter.volume+"<br>"+level;
+    document.getElementsByTagName('circle')[0].setAttribute('r', level*3);
+
+    window.setTimeout(function(){mainLoop(volumeMeter);}, 50);
+  }
+  </script>
 </head>
 <body>
 
   <section id="countdown">
-    <p>Prochaine deadline dans</p>
+    <p contenteditable="true" spellcheck="false">Prochaine deadline dans</p>
     <h1>00:00:00</h1>
     <p></p>
   </section>
@@ -46,9 +60,18 @@
         </form>
       </div>
     </div>
+
+    <div id="audiocontrols">
+      <button id="activate">Activer audio meter</button>
+    </div>
   </section>
 
   <button id="show-menu">Menu</button>
+
+<svg width="310px" height="310px" version="1.1" xmlns="http://www.w3.org/2000/svg" style="position:absolute; bottom: 0; left:0">
+  <circle cx="10" cy="300" r="300" fill="white"/>
+  <p id="counter" style="position: absolute; left : 30px; bottom: 30px; color: black;">100</p>
+</svg>
 
 </body>
 </html>

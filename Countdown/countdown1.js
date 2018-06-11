@@ -3,13 +3,25 @@ window.onload = () => {
   let ui = new UI();
   let countdown = new Countdown();
 
+  // Pass the UI and Countdown objects to the main loop
   window.setInterval(countdownLoop, 100, ui, countdown);
 
+  // Create menu hide/show button
   let menu = document.getElementById('event-menu');
 
   document.getElementById('show-menu').addEventListener('click', function(){
+    console.log('menu');
     if(menu.style.display === 'block') menu.style.display = 'none';
     else menu.style.display = 'block';
+  });
+
+
+  // Create event for activate audio meter button
+  document.getElementById('activate').addEventListener('click', function(e){
+    this.style.display = 'none';
+    let meterObject = new volumeMeter();
+    meterObject.createMeter();
+    mainLoop(meterObject);
   });
 
 };
@@ -105,7 +117,7 @@ class Countdown {
     let validEvents = this.validateEvents(events);
 
     // validateEvents will return an empty array if there are no valid events to display
-    if(validEvents.length === 0) return [0, 0, 0, ""];
+    if(validEvents.length === 0) return ["00", "00", "00", ""];
 
     // Temporary. Will require a loop if the script is to manage multiple events (TODO)
     let displayEvent = validEvents[0];
