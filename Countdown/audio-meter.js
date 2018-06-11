@@ -22,8 +22,11 @@ class volumeMeter {
   // Main function
   createMeter() {
 
-    this.getMediaStream()
-    .then(this.bindStreamProcessor.bind(this), this.returnError.bind(this));
+    return new Promise(resolve => {
+      this.getMediaStream()
+      .then(this.bindStreamProcessor.bind(this), this.returnError.bind(this))
+      .then(() => {resolve();});
+    });
 
   }
 

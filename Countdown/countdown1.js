@@ -4,7 +4,7 @@ window.onload = () => {
   let countdown = new Countdown();
 
   // Pass the UI and Countdown objects to the main loop
-  window.setInterval(countdownLoop, 100, ui, countdown);
+  let cdLoopID = window.setInterval(countdownLoop, 100, ui, countdown);
 
   // Create menu hide/show button
   document.getElementById('show-menu').addEventListener('click', ()=>{ui.toggleMenu()});
@@ -15,15 +15,20 @@ window.onload = () => {
     this.style.display = 'none';
     let meterObject = new volumeMeter();
     let volumeProc = new volumeProcessor();
-    meterObject.createMeter();
+    meterObject.createMeter().then(()=>{
+      console.log('UI init');
+      window.setInterval(dataLoop, 100, meterObject, volumeProc, ui);
+    });
     // mainLoop(meterObject);
-    console.log(volumeProc);
 
-    window.setInterval(dataLoop, 100, meterObject, volumeProc, ui);
+
   });
 
-};
+  // document.getElementById('test').addEventListener('click', function() {
+  //   window.clearInterval(cdLoopID);
+  // });
 
+};
 
 let dataLoop = (audioMeter, volumeProcessor, ui) => {
 
