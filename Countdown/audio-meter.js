@@ -22,11 +22,14 @@ class volumeMeter {
   // Main function
   createMeter() {
 
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       this.getMediaStream()
       .then(this.bindStreamProcessor.bind(this))
       .then(() => {resolve();})
-      .catch(this.returnError.bind(this));
+      .catch((e) => {
+        // this.returnError.bind(this);
+        reject(e);
+      });
     });
 
   }

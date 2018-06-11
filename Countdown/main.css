@@ -24,6 +24,8 @@ body {
   display: none;
   height: 100vh;
   min-width: 200px;
+  max-width: 400px;
+  color: black;
   box-sizing: border-box;
   background-color: white;
   position: absolute;

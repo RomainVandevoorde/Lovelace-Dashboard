@@ -12,12 +12,24 @@ window.onload = () => {
 
   // Create event for activate audio meter button
   document.getElementById('activate').addEventListener('click', function(e){
-    this.style.display = 'none';
     let meterObject = new volumeMeter();
     let volumeProc = new volumeProcessor();
-    meterObject.createMeter().then(()=>{
+    meterObject.createMeter()
+    .then(() => {
       console.log('UI init');
       window.setInterval(dataLoop, 100, meterObject, volumeProc, ui);
+      this.innerHTML = "Désactiver";
+      this.dataset.active = true;
+    })
+    .catch((e) => {
+      console.log(e);
+      if(e.name === "NotAllowedError") {
+        let error = "<b>EN</b>: You must allow the page to access your microphone, or the Volume Meter won't be able to work.<br><b>FR</b>: Vous devez autoriser la page à accéder à votre microphone, ou le Volume Meter ne pourra pas fonctionner.";
+        document.getElementById('audiocontrols').innerHTML += '<p style="color:red">'+error+'</p>';
+      }
+      else {
+        alert("Error: "+e.name+": Check the logs for more details.");
+      }
     });
     // mainLoop(meterObject);
 
