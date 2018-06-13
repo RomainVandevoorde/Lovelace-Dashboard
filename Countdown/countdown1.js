@@ -3,6 +3,9 @@ window.onload = () => {
   let ui = new UI();
   let countdown = new Countdown();
 
+  let events = new Events();
+  events.initList();
+
   // Pass the UI and Countdown objects to the main loop
   let cdLoopID = window.setInterval(countdownLoop, 100, ui, countdown);
 
