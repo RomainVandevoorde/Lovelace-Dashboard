@@ -7,7 +7,7 @@ window.onload = () => {
   let cdLoopID = window.setInterval(countdownLoop, 100, ui, countdown);
 
   // Create menu hide/show button
-  document.getElementById('show-menu').addEventListener('click', ()=>{ui.toggleMenu()});
+  document.getElementById('show-menu').addEventListener('click', ()=>{ui.toggleMenu();});
 
 
   // Create event for activate audio meter button
@@ -48,7 +48,7 @@ let dataLoop = (audioMeter, volumeProcessor, ui) => {
   volumeProcessor.storeData(data);
   ui.debug.innerHTML = volumeProcessor.av+"<br>"+volumeProcessor.data.length;
 
-}
+};
 
 
 let countdownLoop = (ui, cd) => {
@@ -228,7 +228,7 @@ function volumeProcessor() {
 
     // Re-calculates the average
     this.av = this.calcAvgVolume();
-  }
+  };
 
   this.calcAvgVolume = () => {
     let total = 0;
@@ -244,7 +244,7 @@ function volumeProcessor() {
     }
 
     return total/dataLength;
-  }
+  };
 
   this.getGradient = () => {
     let nb = this.av;
@@ -274,5 +274,5 @@ function volumeProcessor() {
   		// red
   		return 'rgb(255,0,0)';
   	}
-  }
+  };
 }
