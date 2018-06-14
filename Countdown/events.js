@@ -61,6 +61,32 @@ class Events {
   //   else console.log(typeof ev);
   // }
 
+  getNextEvent() {
+    let len = this.list.length;
+    let eventIndex = null;
+    let eventDiff = null;
+
+    for(let i = 0; i < len; i++) {
+      let ev = this.list[i];
+      let now = new Date();
+
+      let diff = ev.date - now;
+      console.log(diff);
+
+      if(diff < 0) continue;
+
+      console.log("ok");
+
+      if(eventIndex === null || diff < eventDiff) {
+        console.log("new diff: "+diff);
+        eventIndex = i;
+        eventDiff = diff;
+      }
+    }
+
+    console.log("Next event: "+eventDiff+"("+eventIndex+")");
+  }
+
   getTableList() {
     let len = this.list.length;
     let tbody = document.createElement('tbody');
@@ -78,7 +104,8 @@ class Events {
 
       for(let prop in data) {
         let cell = document.createElement('td');
-        cell.innerHTML = data[prop];
+        let text = document.createTextNode(data[prop]);
+        cell.appendChild(text);
         row.appendChild(cell);
       }
 

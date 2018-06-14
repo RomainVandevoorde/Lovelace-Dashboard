@@ -2,6 +2,7 @@ window.onload = () => {
 
   events = new Events();
   events.initList();
+  events.getNextEvent();
 
   $("#add-target-button").click(function() {
 
