@@ -5,10 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Dashboard</title>
-  <link rel="stylesheet" href="main.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+  <link rel="stylesheet" href="../vendor/Semantic-UI/semantic.min.css">
+  <link rel="stylesheet" href="main.css">
+  <script src="../vendor/jquery-3.1.1.min.js" charset="utf-8"></script>
+  <script src="../vendor/Semantic-UI/semantic.min.js" charset="utf-8"></script>
   <script src="events.js" charset="utf-8"></script>
-  <script type="text/javascript" src="countdown1.js"></script>
+  <script src="countdown1.js" charset="utf-8"></script>
   <script src="audio-meter.js" charset="utf-8"></script>
   <script type="text/javascript">
   let mainLoop = (volumeMeter) => {
@@ -20,9 +23,41 @@
 
     window.setTimeout(function(){mainLoop(volumeMeter);}, 50);
   }
+
   </script>
 </head>
 <body>
+
+<div class="ui modal" id="list-modal">
+  <div class="header">Events</div>
+  <div id="list-contain">
+    <ul>
+
+    </ul>
+  </div>
+  <div class="actions">
+    <div class="ui approve button">Approve</div>
+    <div class="ui button">Neutral</div>
+    <div class="ui cancel button">Cancel</div>
+  </div>
+</div>
+
+<div id="add-modal" class="ui modal">
+  <div class="header">Nouvel event</div>
+  <div id="form-contain">
+    <form action="" class="ui form">
+      <div class="three fields">
+        <div class="field"><label for="event-hour">Heure</label><input id="event-hour" type="number"></div>
+        <div class="field"><label for="event-minute">Minute</label><input id="event-minute" type="number"></div>
+        <div class="field"><label for="event-second">Seconde</label><input id="event-second" type="number"></div>
+      </div>
+    </form>
+  </div>
+  <div class="actions">
+    <div class="ui approve button positive">Add</div>
+    <div class="ui cancel button negative">Cancel</div>
+  </div>
+</div>
 
   <div id="debug">
     <p></p>

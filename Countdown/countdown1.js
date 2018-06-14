@@ -1,5 +1,7 @@
 window.onload = () => {
 
+  $("#add-modal").modal('show');
+
   let ui = new UI();
   let countdown = new Countdown();
 
