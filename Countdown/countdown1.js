@@ -1,18 +1,31 @@
 window.onload = () => {
 
-  let events = new Events();
+  events = new Events();
   events.initList();
 
   $("#add-target-button").click(function() {
 
     $("#add-target-modal").modal({
       onApprove : function(e) {
-        // window.alert('Approved!');
+        // Get the form
         let form = this.getElementsByTagName('form')[0];
+        // Create a date
+        let target = events.cleanTarget([form[1].value, form[2].value, form[3].value]);
+        let date = events.targetToDateObject(target);
+        // Get the title
+        let title = form[0].value;
+        // Get the description
+        let description = form[4].value;
         console.log(form[0].value, form[1].value, form[2].value, form[3].value, form[4].value);
+        events.addEvent2({title:title, date:date, description:description});
+        console.log(events.list);
       }
     }).modal('show');
 
+  });
+
+  $("#log-events").click(function() {
+    console.log(events.list);
   });
 
   let ui = new UI();

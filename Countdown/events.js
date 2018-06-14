@@ -1,7 +1,21 @@
 
+class Event {
+  constructor(data) {
+    this.title = data.title || "Anon"; // Display name in the UI
+    this.date = data.date || new Date();
+    this.description = data.description || "";
+
+    this.after = {};
+    this.after.time = 30; // How long the event will be displayed after it is finished
+    this.after.message = ""; // Will be displayed when event is over
+  }
+}
+
 class Events {
   constructor() {
     this.list = [];
+    // this.storage = window.localStorage;
+    // this.initStorage();
   }
 
   // Checks QueryString and LocalStorage to initiate events
@@ -10,18 +24,24 @@ class Events {
     // Pushes QS events in the list
     this.addQSEvents();
     // TODO Check LocalStorage
-    console.log(this.list);
+    // console.log(this.list);
+    // let jsonlist = JSON.stringify(this.list);
+    // console.log(jsonlist);
+    // console.log(JSON.parse(jsonlist));
   }
 
-  createValidEvent(data) {
-    let newObject = {};
-    
-    newObject.object = data.object || new Date();
-    newObject.title = data.title || "";
-    newObject.description = data.description || "";
-    newObject.end_message = data.end_message || "";
+  initStorage() {
+    if (!this.storage.events) {
+      console.log("nope");
+      window.localStorage.setItem('events', "{}");
+      console.log(window.localStorage.events);
+    }
+  }
 
-    return newObject;
+  addEvent2(data) {
+    let ev = new Event(data);
+    console.log(ev);
+    this.list.push(ev);
   }
 
   // Validates and adds an event to the list
@@ -39,6 +59,12 @@ class Events {
       if(cleaned !== 0) this.list.push(cleaned);
     }
     else console.log(typeof ev);
+  }
+
+  targetToDateObject(target) {
+    let now = new Date();
+    let date = new Date(now.getFullYear(), now.getMonth(), now.getDate(), target[0], target[1] || 0, target[2] || 0);
+    return date;
   }
 
   targetToTimestamp(target) {
@@ -62,9 +88,13 @@ class Events {
       // Validate and push targets
       if(pair[0] === "target") {
         let tgt = this.cleanTarget(pair[1].split(":"));
-        let ts = this.targetToTimestamp(tgt);
-        let validTs = this.cleanTimestamp(ts);
-        if(validTs !== 0) this.list.push(validTs);
+        let date = this.targetToDateObject(tgt);
+        // let ts = this.targetToTimestamp(tgt);
+        // let validTs = this.cleanTimestamp(ts);
+        // if(validTs !== 0) this.list.push(validTs);
+        let ev = new Event({date:date});
+        this.list.push(ev);
+        console.log(ev);
       }
       else if(pair[0] === "ts") {
         let ts = this.cleanTimestamp(pair[1]);
@@ -72,29 +102,6 @@ class Events {
       }
       else console.log("Unknown param : "+pair[0]+" - "+pair[1]);
     }
-  }
-
-  validateQSParams(params) {
-    let len = params.length;
-    let validTargets = [];
-    let validTimestamps = [];
-
-    for(let i = 0; i < len; i++) {
-      if(params[i].target) {
-        let cleanedQS = this.validateQStarget(params[i].target);
-        if(cleanedQS.length > 0) validTargets.push(cleanedQS);
-      }
-      if(params[i].timer) {
-        // TODO Validate timer
-      }
-      if(params[i].timestamp) {
-        let ts = parseInt(params[i].timestamp);
-        if(ts > Date.now()) validTimestamps.push(ts);
-      }
-    }
-
-    console.log([validTargets, validTimestamps]);
-    return [validTargets, validTimestamps];
   }
 
   // Returns a valid target array (h:m:s)
