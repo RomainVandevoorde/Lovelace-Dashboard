@@ -13,6 +13,7 @@
   <script src="events.js" charset="utf-8"></script>
   <script src="countdown1.js" charset="utf-8"></script>
   <script src="audio-meter.js" charset="utf-8"></script>
+  <script src="interface.js" charset="utf-8"></script>
   <script type="text/javascript">
   let mainLoop = (volumeMeter) => {
 
@@ -34,17 +35,15 @@
     <table class="ui celled table">
       <thead>
         <tr>
-          <td>Titre</td>
-          <td>Date</td>
+          <th>Titre</th>
+          <th>Date</th>
+          <th>Actions</th>
         </tr>
       </thead>
-
     </table>
   </div>
   <div class="actions">
-    <div class="ui approve button">Approve</div>
-    <div class="ui button">Neutral</div>
-    <div class="ui cancel button">Cancel</div>
+    <div class="ui approve button primary">Done</div>
   </div>
 </div>
 

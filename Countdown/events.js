@@ -65,6 +65,11 @@ class Events {
     let len = this.list.length;
     let tbody = document.createElement('tbody');
 
+    if(len === 0) {
+      tbody.innerHTML = "<tr><td>No events to show</td></tr>";
+      return tbody;
+    }
+
     for(let i = 0; i < len; i++) {
 
       let obj = this.list[i];
@@ -76,6 +81,11 @@ class Events {
         cell.innerHTML = data[prop];
         row.appendChild(cell);
       }
+
+      let actionsCell = document.createElement('td');
+      actionsCell.innerHTML = '<i class="fa fa-trash"></i>  <i class="fa fa-edit"></i>';
+
+      row.appendChild(actionsCell);
 
       tbody.appendChild(row);
 
@@ -89,6 +99,11 @@ class Events {
     let now = new Date();
     let date = new Date(now.getFullYear(), now.getMonth(), now.getDate(), target[0], target[1] || 0, target[2] || 0);
     return date;
+  }
+
+  timestampToDateObject(ts) {
+    let date = new Date(ts);
+    console.log(date);
   }
 
   targetToTimestamp(target) {
@@ -112,17 +127,19 @@ class Events {
       // Validate and push targets
       if(pair[0] === "target") {
         let tgt = this.cleanTarget(pair[1].split(":"));
+        if(tgt.length === 0) continue;
         let date = this.targetToDateObject(tgt);
         // let ts = this.targetToTimestamp(tgt);
         // let validTs = this.cleanTimestamp(ts);
         // if(validTs !== 0) this.list.push(validTs);
-        let ev = new Event({date:date});
+        let ev = new Event({date:date, title:"Query"});
         this.list.push(ev);
-        console.log(ev);
       }
       else if(pair[0] === "ts") {
         let ts = this.cleanTimestamp(pair[1]);
-        this.list.push(ts);
+        // this.list.push(ts);
+        let date = this.timestampToDateObject(ts);
+        // console.log(date);
       }
       else console.log("Unknown param : "+pair[0]+" - "+pair[1]);
     }

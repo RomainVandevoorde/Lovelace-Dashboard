@@ -6,9 +6,11 @@ window.onload = () => {
   $("#add-target-button").click(function() {
 
     $("#add-target-modal").modal({
-      onApprove : function(e) {
+      onApprove : function() {
         // Get the form
         let form = this.getElementsByTagName('form')[0];
+
+        // form.submit();
         // Create a date
         let target = events.cleanTarget([form[1].value, form[2].value, form[3].value]);
         let date = events.targetToDateObject(target);
@@ -16,26 +18,17 @@ window.onload = () => {
         let title = form[0].value;
         // Get the description
         let description = form[4].value;
-        console.log(form[0].value, form[1].value, form[2].value, form[3].value, form[4].value);
+        // console.log(form[0].value, form[1].value, form[2].value, form[3].value, form[4].value);
         events.addEvent2({title:title, date:date, description:description});
-        console.log(events.list);
+        // console.log(events.list);
       }
     }).modal('show');
 
   });
 
-  $("#log-events").click(function() {
+  let UI2 = new Interface();
 
-    let table = document.getElementById('list-modal').getElementsByTagName('table')[0];
-    let oldTbody = table.getElementsByTagName('tbody')[0];
-    if(oldTbody) table.removeChild(oldTbody);
-
-    console.log(events.list);
-    let tbody = events.getTableList();
-    console.log(tbody);
-    table.appendChild(tbody);
-    $("#list-modal").modal('show');
-  });
+  $("#log-events").click(UI2.showEventsList);
 
   let ui = new UI();
   let countdown = new Countdown();
