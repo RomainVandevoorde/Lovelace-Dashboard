@@ -25,7 +25,16 @@ window.onload = () => {
   });
 
   $("#log-events").click(function() {
+
+    let table = document.getElementById('list-modal').getElementsByTagName('table')[0];
+    let oldTbody = table.getElementsByTagName('tbody')[0];
+    if(oldTbody) table.removeChild(oldTbody);
+
     console.log(events.list);
+    let tbody = events.getTableList();
+    console.log(tbody);
+    table.appendChild(tbody);
+    $("#list-modal").modal('show');
   });
 
   let ui = new UI();

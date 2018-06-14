@@ -45,20 +45,44 @@ class Events {
   }
 
   // Validates and adds an event to the list
-  addEvent(ev) {
-    if(ev.isArray()) {
-      // Event is a hour:min:sec array (target)
-      let cleaned = this.cleanTarget(ev);
-      let ts = this.targetToTimestamp(cleaned);
-      let validTs = this.cleanTimestamp(ts);
-      if(validTs !== 0) this.list.push(validTs);
+  // addEvent(ev) {
+  //   if(ev.isArray()) {
+  //     // Event is a hour:min:sec array (target)
+  //     let cleaned = this.cleanTarget(ev);
+  //     let ts = this.targetToTimestamp(cleaned);
+  //     let validTs = this.cleanTimestamp(ts);
+  //     if(validTs !== 0) this.list.push(validTs);
+  //   }
+  //   else if(typeof ev === "number") {
+  //     // Event is a timestamp
+  //     let cleaned = this.cleanTimestamp(ev);
+  //     if(cleaned !== 0) this.list.push(cleaned);
+  //   }
+  //   else console.log(typeof ev);
+  // }
+
+  getTableList() {
+    let len = this.list.length;
+    let tbody = document.createElement('tbody');
+
+    for(let i = 0; i < len; i++) {
+
+      let obj = this.list[i];
+      let row = document.createElement('tr');
+      let data = [obj.title, obj.date];
+
+      for(let prop in data) {
+        let cell = document.createElement('td');
+        cell.innerHTML = data[prop];
+        row.appendChild(cell);
+      }
+
+      tbody.appendChild(row);
+
     }
-    else if(typeof ev === "number") {
-      // Event is a timestamp
-      let cleaned = this.cleanTimestamp(ev);
-      if(cleaned !== 0) this.list.push(cleaned);
-    }
-    else console.log(typeof ev);
+
+    return tbody;
+
   }
 
   targetToDateObject(target) {
