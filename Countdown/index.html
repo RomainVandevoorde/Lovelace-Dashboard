@@ -42,14 +42,19 @@
   </div>
 </div>
 
-<div id="add-modal" class="ui modal">
+<div id="add-target-modal" class="ui modal small">
   <div class="header">Nouvel event</div>
-  <div id="form-contain">
+  <div id="form-contain" class="content">
     <form action="" class="ui form">
-      <div class="three fields">
-        <div class="field"><label for="event-hour">Heure</label><input id="event-hour" type="number"></div>
-        <div class="field"><label for="event-minute">Minute</label><input id="event-minute" type="number"></div>
-        <div class="field"><label for="event-second">Seconde</label><input id="event-second" type="number"></div>
+      <div class="four fields">
+        <div class="ten wide field"><label for="event-title">Titre</label><input id="event-title" type="text"></div>
+        <div class="two wide field"><label for="event-hour">Heure</label><input id="event-hour" type="number" value="16"></div>
+        <div class="two wide field"><label for="event-minute">Minute</label><input id="event-minute" type="number" value="30"></div>
+        <div class="two wide field"><label for="event-second">Seconde</label><input id="event-second" type="number" value="00"></div>
+      </div>
+      <div class="field">
+        <label>Description</label>
+        <textarea rows="2"></textarea>
       </div>
     </form>
   </div>
@@ -109,7 +114,10 @@
     </div>
   </section>
 
-  <button id="show-menu">Menu</button>
+  <div id="buttons-br">
+    <button id="show-menu">Menu</button><br>
+    <button id="add-target-button">Add target</button>
+  </div>
 
 <svg width="310px" height="310px" version="1.1" xmlns="http://www.w3.org/2000/svg" style="position:absolute; bottom: 0; left:0">
   <circle cx="10" cy="300" r="300" fill="white"/>

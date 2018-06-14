@@ -13,6 +13,17 @@ class Events {
     console.log(this.list);
   }
 
+  createValidEvent(data) {
+    let newObject = {};
+    
+    newObject.object = data.object || new Date();
+    newObject.title = data.title || "";
+    newObject.description = data.description || "";
+    newObject.end_message = data.end_message || "";
+
+    return newObject;
+  }
+
   // Validates and adds an event to the list
   addEvent(ev) {
     if(ev.isArray()) {
@@ -50,7 +61,7 @@ class Events {
     for(let pair of params.entries()) {
       // Validate and push targets
       if(pair[0] === "target") {
-        let tgt = this.cleanTarget(pair[1]);
+        let tgt = this.cleanTarget(pair[1].split(":"));
         let ts = this.targetToTimestamp(tgt);
         let validTs = this.cleanTimestamp(ts);
         if(validTs !== 0) this.list.push(validTs);
@@ -61,31 +72,6 @@ class Events {
       }
       else console.log("Unknown param : "+pair[0]+" - "+pair[1]);
     }
-  }
-
-  getQSEvents() {
-    let params = this.getQueryStringParams();
-    if(params.length > 0) params = this.validateQSParams(params);
-    else {
-      console.log("no valid params");
-      return;
-    };
-    console.log(params);
-  }
-
-  getQueryStringParams() {
-    let url = new URL(window.location.href);
-    let params = new URLSearchParams(url.search.slice(1));
-
-    let validParams = [];
-
-    for(let pair of params.entries()) {
-      if(pair[0] === "target")     validParams.push({"target" : pair[1]});
-      else if(pair[0] === "timer") validParams.push({"timer" : pair[1]});
-      else if(pair[0] === "ts")    validParams.push({"timestamp" : pair[1]});
-      else console.log(pair[0]+" : "+pair[1]);
-    }
-    return validParams;
   }
 
   validateQSParams(params) {
@@ -114,11 +100,8 @@ class Events {
   // Returns a valid target array (h:m:s)
   cleanTarget(tgt) {
     let result = [];
-    let parts = [];
 
-    // Creates an array if we received a string
-    if(typeof tgt === "string") parts = tgt.split(":");
-    else if(typeof tgt === "object") parts = tgt;
+    let parts = tgt; // TODO rewrite variables
 
     let nbParts = parts.length;
 

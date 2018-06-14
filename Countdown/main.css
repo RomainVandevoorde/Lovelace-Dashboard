@@ -64,11 +64,19 @@ body {
   box-sizing: border-box;
 }
 
-#show-menu {
+#buttons-br {
+  position:absolute;
+  bottom: 10px;
+  right: 10px;
+  /* background-color: limegreen; */
+  text-align: right;
+}
+
+/* #show-menu {
   position: absolute;
   bottom: 10px;
   right: 10px;
-}
+} */
 
 /* #hide-menu {
   position: absolute;

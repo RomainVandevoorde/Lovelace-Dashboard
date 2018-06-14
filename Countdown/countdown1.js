@@ -1,12 +1,22 @@
 window.onload = () => {
 
-  $("#add-modal").modal('show');
+  let events = new Events();
+  events.initList();
+
+  $("#add-target-button").click(function() {
+
+    $("#add-target-modal").modal({
+      onApprove : function(e) {
+        // window.alert('Approved!');
+        let form = this.getElementsByTagName('form')[0];
+        console.log(form[0].value, form[1].value, form[2].value, form[3].value, form[4].value);
+      }
+    }).modal('show');
+
+  });
 
   let ui = new UI();
   let countdown = new Countdown();
-
-  let events = new Events();
-  events.initList();
 
   // Pass the UI and Countdown objects to the main loop
   let cdLoopID = window.setInterval(countdownLoop, 100, ui, countdown);
