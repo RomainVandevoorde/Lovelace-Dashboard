@@ -22,14 +22,11 @@ class volumeMeter {
   // Main function
   createMeter() {
 
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       this.getMediaStream()
       .then(this.bindStreamProcessor.bind(this))
       .then(() => {resolve();})
-      .catch((e) => {
-        // this.returnError.bind(this);
-        reject(e);
-      });
+      .catch(this.returnError.bind(this));
     });
 
   }
@@ -107,7 +104,10 @@ class volumeMeter {
   // Returns a processor object for the audioContext
   createProcessor() {
     let processor = this.audioContext.createScriptProcessor(512);
-    processor.onaudioprocess = this.volumeAudioProcess;
+    processor.onaudioprocess = function(e){
+      console.log(e);
+      this.volumeAudioProcess(e);
+    };
     processor.clipping = false;
     processor.lastClip = 0;
     processor.volume = 0;
