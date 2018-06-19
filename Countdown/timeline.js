@@ -70,8 +70,8 @@ function Timeline() {
 
   this.getCountdown = () => {
     // Remove first event in array if it's done
-    this.checkIfEventPassed();
-    // console.log(this.defaultTimelineEvents);
+    if(this.defaultTimelineEvents.length > 0) this.checkIfEventPassed();
+
     // Si il n'y a plus d'events, return hour
     if(this.defaultTimelineEvents.length === 0) return this.displayHour();
 

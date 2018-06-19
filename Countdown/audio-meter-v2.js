@@ -191,7 +191,7 @@ function vmLoop(vm) {
   }
   let content = timeline.getCountdown();
   document.getElementsByTagName('h1')[0].innerHTML = content[0] + ":" + content[1] + ":" + content[2];
-  document.getElementsByTagName('h2')[0].innerHTML = content[3];
+  document.getElementsByTagName('h2')[0].innerHTML = content[3] || "";
   window.setTimeout(vmLoop, 50, vm);
 }
 
