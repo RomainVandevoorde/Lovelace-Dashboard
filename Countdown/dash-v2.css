@@ -15,10 +15,13 @@ body {
 
 #countdown h1 {
   font-size: 60px;
+  font-family: 'Roboto Mono', monospace;
+  font-variant-numeric: tabular-nums;
 }
 
 #countdown h2 {
   font-size: 40px;
+  font-family: 'Martel Sans', sans-serif;
 }
 
 h1#noiseNumber {
