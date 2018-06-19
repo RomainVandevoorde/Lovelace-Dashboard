@@ -4,18 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <style media="screen">
-    body {
-      background-color: black;
-    }
-  </style>
+  <link rel="stylesheet" href="dash-v2.css">
   <title>Document</title>
 </head>
 <body>
-  <svg width="410px" height="410px" version="1.1" xmlns="http://www.w3.org/2000/svg" style="position:absolute; bottom: 0; left:0">
-    <circle cx="10" cy="400" r="400" fill="rgb(0,255,0)"/>
+  <div id="countdown">
+    <h1></h1>
+    <h2></h2>
+  </div>
+  <svg width="610px" height="610px" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="10" cy="600" r="600" fill="rgb(0,0,0)"/>
   </svg>
-  <p id="counter" style="position: absolute; left : 30px; bottom: 30px; color: black;">100</p>
+  <h1 id="noiseNumber">100</h1>
+  <script src="timeline.js" charset="utf-8"></script>
   <script src="audio-meter-v2.js" charset="utf-8"></script>
 </body>
 </html>

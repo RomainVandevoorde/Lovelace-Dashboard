@@ -1,0 +1,43 @@
+body {
+  background-color: black;
+}
+
+#countdown {
+  color:white;
+  text-align:center;
+  z-index:1000;
+  position:relative;
+}
+
+#countdown h1, #countdown h2 {
+  text-shadow: 1px 1px 2px black;
+}
+
+#countdown h1 {
+  font-size: 60px;
+}
+
+#countdown h2 {
+  font-size: 40px;
+}
+
+h1#noiseNumber {
+  position: absolute;
+  left : 30px;
+  bottom: 30px;
+  color: black;
+  z-index: 500;
+  font-family: sans-serif;
+  font-weight: bold;
+}
+
+svg {
+  position:absolute;
+  bottom: 0;
+  left:0;
+  z-index: 100;
+}
+
+circle {
+  z-index:100;
+}

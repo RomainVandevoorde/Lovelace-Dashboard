@@ -1,6 +1,6 @@
 
 const circle = document.getElementsByTagName('circle')[0];
-const number = document.getElementsByTagName('p')[0];
+const number = document.getElementById('noiseNumber');
 
 // let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 // let analyser = audioCtx.createAnalyser();
@@ -178,15 +178,19 @@ class VolumeMeter {
 let vm = new VolumeMeter();
 vm.getMediaStream();
 
+let timeline = new Timeline();
 
 function vmLoop(vm) {
   vm.main();
 
   if(vm.scaledAvg !== null) {
-    circle.setAttribute('r', (vm.scaledAvg*3)+100);
+    circle.setAttribute('r', (vm.scaledAvg*5)+100);
     circle.setAttribute('fill', vm.color);
     number.innerHTML = Math.floor(vm.scaledAvg);
   }
+  let content = timeline.getCountdown();
+  document.getElementsByTagName('h1')[0].innerHTML = content[0] + ":" + content[1] + ":" + content[2];
+  document.getElementsByTagName('h2')[0].innerHTML = content[3];
   window.setTimeout(vmLoop, 50, vm);
 }
 
