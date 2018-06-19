@@ -14,9 +14,9 @@ body {
 }
 
 #countdown h1 {
-  font-size: 60px;
+  font-size: 120px;
   font-family: 'Roboto Mono', monospace;
-  font-variant-numeric: tabular-nums;
+  /* font-weight: 100; */
 }
 
 #countdown h2 {
