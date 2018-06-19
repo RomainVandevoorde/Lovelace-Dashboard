@@ -65,7 +65,7 @@ const number = document.getElementsByTagName('p')[0];
 class VolumeMeter {
   constructor() {
     // Settings
-    this.nbDataRecords = 40;
+    this.nbDataRecords = 40; // Number of data points to save
 
     this.lastRMS = 0;
     this.allTimeMin = null;
@@ -164,12 +164,12 @@ class VolumeMeter {
   calcColor() {
     if(this.scaledAvg < 0) this.color = "rgb(0,0,0)";
     else if(this.scaledAvg <= 50) {
-      let redLvl = (this.scaledAvg/50)*200;
-      this.color = "rgb("+redLvl+",200,0)";
+      let redLvl = (this.scaledAvg/50)*255;
+      this.color = "rgb("+redLvl+",255,0)";
     }
     else if(this.scaledAvg <=100) {
       let greenLvl = 255 - (((this.scaledAvg-50)/50)*255);
-      this.color = "rgb(200,"+greenLvl+",0)";
+      this.color = "rgb(255,"+greenLvl+",0)";
     }
     else this.color = "rgb(255,0,0)";
   }
