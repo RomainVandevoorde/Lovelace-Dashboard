@@ -1,19 +1,43 @@
 
 function Timeline() {
-  this.nextRefresh = null;
   this.defaultTimelineEvents = [];
 
   this.defaultTimeline = [
-    {description : "Test", hour : 2, minute : 4, holdCountdown : 600, holdText : 0},
     {description : "Début de la journée", hour : 9, minute : 0, holdCountdown : 0, holdText : 0},
     {description : "Pause du matin", hour : 11, minute : 0, holdCountdown : 0, holdText : 0},
-    {description : "Fin de la pause du matin", hour : 11, minute : 15, holdCountdown : 0, holdText : 0},
     {description : "Pause midi", hour : 12, minute : 30, holdCountdown : 0, holdText : 0},
     {description : "Fin de la pause midi", hour : 13, minute : 30, holdCountdown : 0, holdText : 0},
     {description : "Pause de l'après-midi", hour : 15, minute : 0, holdCountdown : 0, holdText : 0},
+    {description : "Fin de la pause du matin", hour : 11, minute : 15, holdCountdown : 60, holdText : 0},
     {description : "Fin de la pause de l'après-midi", hour : 15, minute : 15, holdCountdown : 0, holdText : 0},
     {description : "Fin de la journée", hour : 17, minute : 0, holdCountdown : 0, holdText : 0}
   ];
+
+  for(let e of this.defaultTimeline) {
+    e.category = 0; // Cat 0 = defaults
+  }
+
+  this.addTimestampToEvents = () => {
+    for(let e of this.defaultTimeline) {
+
+      // Skip this if the event already has a valid date
+      if(e.date && e.date.getTime) continue;
+
+      // Creates a Date corresponding to this event's values
+      let now = new Date();
+      let date = new Date(now.getFullYear(), now.getMonth(), now.getDate(), e.hour, e.minute);
+
+      // Attributes Date to the event
+      e.date = date;
+    }
+  };
+
+  // Sorts from earliest event to latest event
+  this.sortEvents = () => {
+    this.defaultTimeline.sort(function(a, b) {
+      return a.date.getTime() - b.date.getTime();
+    });
+  }
 
   this.init = () => {
     let i = 0;
@@ -26,26 +50,6 @@ function Timeline() {
   };
 
   this.init();
-
-  // this.getNextTimelineEvent = () => {
-  //   let now = new Date();
-  //   let currentHour = now.getHours();
-  //   let currentMinute = now.getMinutes();
-  //   let nextEvent = null;
-  //
-  //   for(let event of this.defaultTimeline) {
-  //     if(event.hour > currentHour) {
-  //       nextEvent = event;
-  //       break;
-  //     }
-  //     else if(event.hour === currentHour && event.minute > currentMinute) {
-  //       nextEvent = event;
-  //       break;
-  //     }
-  //   }
-  //
-  //   return nextEvent;
-  // };
 
   this.checkIfEventPassed = () => {
 
@@ -101,7 +105,11 @@ function Timeline() {
 
 let timeline = new Timeline();
 
-window.setInterval(function() {
-  let content = timeline.getCountdown();
-  document.getElementsByTagName('h1')[0].innerHTML = content[0] + ":" + content[1] + ":" + content[2];
-}, 100);
+// window.setInterval(function() {
+//   let content = timeline.getCountdown();
+//   document.getElementsByTagName('h1')[0].innerHTML = content[0] + ":" + content[1] + ":" + content[2];
+// }, 100);
+
+timeline.addTimestampToEvents();
+timeline.sortEvents();
+console.log(timeline.defaultTimeline);
