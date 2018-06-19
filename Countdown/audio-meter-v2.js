@@ -184,9 +184,10 @@ function vmLoop(vm) {
   vm.main();
 
   if(vm.scaledAvg !== null) {
-    circle.setAttribute('r', (vm.scaledAvg*5)+100);
+    circle.setAttribute('r', (vm.scaledAvg*9)+100);
     circle.setAttribute('fill', vm.color);
     number.innerHTML = Math.floor(vm.scaledAvg);
+    // number.style.fontSize = Math.floor(20 + vm.scaledAvg/2) + "px";
   }
   let content = timeline.getCountdown();
   document.getElementsByTagName('h1')[0].innerHTML = content[0] + ":" + content[1] + ":" + content[2];
