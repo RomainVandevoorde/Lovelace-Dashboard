@@ -1,6 +1,8 @@
 
-const circle = document.getElementsByTagName('circle')[0];
+// const circle = document.getElementsByTagName('circle')[0];
+const circle = document.getElementById('noiseCircle');
 const number = document.getElementById('noiseNumber');
+const vw = window.innerWidth; // viewport width
 
 // let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 // let analyser = audioCtx.createAnalyser();
@@ -180,19 +182,34 @@ vm.getMediaStream();
 
 let timeline = new Timeline();
 
-function vmLoop(vm) {
-  vm.main();
+let then = 0;
+let delay = 50;
 
-  if(vm.scaledAvg !== null) {
-    circle.setAttribute('r', (vm.scaledAvg*9)+100);
-    circle.setAttribute('fill', vm.color);
-    number.innerHTML = Math.floor(vm.scaledAvg);
-    // number.style.fontSize = Math.floor(20 + vm.scaledAvg/2) + "px";
+function vmLoop(time) {
+
+  if((time - then) > delay) {
+
+    then = time;
+
+    vm.main();
+
+    if(vm.scaledAvg !== null) {
+      let increase = vw - 100;
+      let size = (Math.floor(vm.scaledAvg*(increase/100))+100)+"px";
+      circle.style.width = size;
+      circle.style.height = size;
+      circle.style.borderTopRightRadius = size;
+      circle.style.backgroundColor = vm.color;
+      number.innerHTML = Math.floor(vm.scaledAvg);
+      number.style.fontSize = Math.floor(20 + vm.scaledAvg/2) + "px";
+    }
+    let content = timeline.getCountdown();
+    document.getElementsByTagName('h1')[0].innerHTML = content[0] + ":" + content[1] + ":" + content[2];
+    document.getElementsByTagName('h2')[0].innerHTML = content[3] || "";
+
   }
-  let content = timeline.getCountdown();
-  document.getElementsByTagName('h1')[0].innerHTML = content[0] + ":" + content[1] + ":" + content[2];
-  document.getElementsByTagName('h2')[0].innerHTML = content[3] || "";
-  window.setTimeout(vmLoop, 50, vm);
+
+  requestAnimationFrame(vmLoop);
 }
 
-vmLoop(vm);
+requestAnimationFrame(vmLoop);
