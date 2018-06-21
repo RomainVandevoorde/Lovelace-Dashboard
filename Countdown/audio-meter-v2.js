@@ -3,6 +3,8 @@
 const circle = document.getElementById('noiseCircle');
 const number = document.getElementById('noiseNumber');
 const vw = window.innerWidth; // viewport width
+const mainText = document.getElementsByTagName('h1')[0];
+const scdText = document.getElementsByTagName('h2')[0];
 
 // let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 // let analyser = audioCtx.createAnalyser();
@@ -69,6 +71,10 @@ class VolumeMeter {
     // Settings
     this.nbDataRecords = 40; // Number of data points to save
 
+    this.maxHistory = []; // Max storage
+    this.lastMaxTime = 0; // Last time max was increased
+    this.lastMaxStoreTime = 0; // Last time max was saved
+
     this.lastRMS = 0;
     this.allTimeMin = null;
     this.allTimeMax = null;
@@ -123,12 +129,24 @@ class VolumeMeter {
       this.avgData();
     }
     if(this.data.length > 39) {
-      if(!this.allTimeMax || this.avg > this.allTimeMax) this.allTimeMax = this.avg;
+      if(!this.allTimeMax || this.avg > this.allTimeMax) {
+        this.lastMaxTime = now;
+        this.allTimeMax = this.avg;
+      }
       if(!this.allTimeMin || this.avg < this.allTimeMin) this.allTimeMin = this.avg;
     }
     if(this.allTimeMin && this.allTimeMax && this.allTimeMax - this.allTimeMin > 0) {
       this.calcScaledAvg();
       this.calcColor();
+      if((now - this.streamStart) > 60000 && (now - this.lastMaxStoreTime) > 120000) {
+        this.lastMaxStoreTime = now;
+        this.maxHistory.push(this.allTimeMax);
+        console.log("logged max");
+      }
+      if(now - this.lastMaxTime > 300000) {
+        this.lastMaxTime = now;
+        this.allTimeMax -= this.allTimeMax/20;
+      }
     }
   }
 
@@ -164,20 +182,21 @@ class VolumeMeter {
   }
 
   calcColor() {
+    let step1 = 30; // Volume pour la couleur orange
     if(this.scaledAvg < 0) this.color = "rgb(0,0,0)";
-    else if(this.scaledAvg <= 50) {
-      let redLvl = (this.scaledAvg/50)*255;
+    else if(this.scaledAvg <= step1) {
+      let redLvl = (this.scaledAvg/step1)*255;
       this.color = "rgb("+redLvl+",255,0)";
     }
-    else if(this.scaledAvg <=100) {
-      let greenLvl = 255 - (((this.scaledAvg-50)/50)*255);
+    else if(this.scaledAvg <= 100) {
+      let greenLvl = 255 - (((this.scaledAvg-(step1))/(100 - step1))*255);
       this.color = "rgb(255,"+greenLvl+",0)";
     }
     else this.color = "rgb(255,0,0)";
   }
 }
 
-let vm = new VolumeMeter();
+vm = new VolumeMeter();
 vm.getMediaStream();
 
 let timeline = new Timeline();
@@ -204,8 +223,8 @@ function vmLoop(time) {
       number.style.fontSize = Math.floor(20 + vm.scaledAvg/2) + "px";
     }
     let content = timeline.getCountdown();
-    document.getElementsByTagName('h1')[0].innerHTML = content[0] + ":" + content[1] + ":" + content[2];
-    document.getElementsByTagName('h2')[0].innerHTML = content[3] || "";
+    mainText.innerHTML = content[0] + ":" + content[1] + ":" + content[2];
+    scdText.innerHTML = content[3] || "";
 
   }
 
