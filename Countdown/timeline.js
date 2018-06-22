@@ -13,7 +13,7 @@ function Timeline() {
     {description : "Pause de l'après-midi", hour : 15, minute : 0, holdCountdown : 0, holdText : 0},
     {description : "Fin de la pause de l'après-midi", hour : 15, minute : 15, holdCountdown : 0, holdText : 0},
     // {description : "Débrief", hour : 16, minute : 45, holdCountdown : 0, holdText : 0},
-    {description : "Fin de la journée", hour : 17, minute : 0, holdCountdown : 0, holdText : 0}
+    {description : "PICOOOOLE", hour : 17, minute : 0, holdCountdown : 0, holdText : 0}
   ];
 
   this.init = () => {

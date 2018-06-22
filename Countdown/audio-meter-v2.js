@@ -3,68 +3,9 @@
 const circle = document.getElementById('noiseCircle');
 const number = document.getElementById('noiseNumber');
 const vw = window.innerWidth; // viewport width
+const increase = vw - 100;
 const mainText = document.getElementsByTagName('h1')[0];
 const scdText = document.getElementsByTagName('h2')[0];
-
-// let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-// let analyser = audioCtx.createAnalyser();
-//
-//
-//
-// if (navigator.mediaDevices.getUserMedia) {
-//    console.log('getUserMedia supported.');
-//    let constraints = {audio: true};
-//    navigator.mediaDevices.getUserMedia (constraints)
-//       .then(
-//         function(stream) {
-//            source = audioCtx.createMediaStreamSource(stream);
-//            source.connect(analyser);
-//
-//         	 display();
-//       })
-//       .catch( function(err) { console.log('The following gUM error occured: ' + err);})
-// } else {
-//    alert('getUserMedia not supported on your browser!');
-// }
-//
-//
-// analyser.fftSize = 32;
-// var bufferLength = analyser.frequencyBinCount;
-// var dataArray = new Uint8Array(bufferLength);
-// console.log(bufferLength);
-// max = 0;
-// min = 0;
-//
-// function display() {
-//
-//   analyser.getByteFrequencyData(dataArray);
-//   // dataArray.fill(128);
-//   // console.log(dataArray);
-//
-//   let sum = 0;
-//
-//   for(var i = 0; i < bufferLength; i++) {
-//     // x = (dataArray[i]-128)*1.0/128.0;
-//     // let x = dataArray[i];
-//     let x = (dataArray[i]*1.0)/256.0;
-//     sum += x*x;
-//     // sum += x;
-//   }
-//
-//   let rms = Math.sqrt(sum/bufferLength);
-//   if(rms > max) max = rms;
-//   // let av = sum/bufferLength;
-//
-//   // console.log(rms);
-//   //
-//   let nb = Math.floor(rms*100);
-//
-//   number.innerHTML = nb+"<br>"+min+"<br>"+max;
-//   circle.setAttribute('r', rms*400);
-//
-//   window.setTimeout(display, 50);
-//     // requestAnimationFrame(display);
-// }
 
 class VolumeMeter {
   constructor() {
@@ -213,7 +154,7 @@ function vmLoop(time) {
     vm.main();
 
     if(vm.scaledAvg !== null) {
-      let increase = vw - 100;
+      // let increase = vw - 100;
       let size = (Math.floor(vm.scaledAvg*(increase/100))+100)+"px";
       circle.style.width = size;
       circle.style.height = size;
